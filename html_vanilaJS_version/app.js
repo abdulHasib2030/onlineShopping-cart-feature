@@ -2,6 +2,7 @@ const cartBtn = document.querySelector('#cart-btn')
 const chectoutBtn = document.querySelector('#checkout-btn')
 const chectoutValue = document.querySelector('#checkout-value')
 const productImg = document.querySelector('#product-img')
+const checkOutBtn = document.querySelector('#checkOut') // inner modal checkout btn
 
 // error msg //
 const notification = document.querySelector('#notification')
@@ -162,11 +163,7 @@ cartBtn.addEventListener('click', () => {
 
 
 
-// close error 
-// const closeError = document.querySelector('#close-error')
-// closeError.addEventListener('click', ()=>{
-//     notification.classList.add('hidden')
-// })
+// close error
 const closeError = () =>{
     notification.classList.add('hidden')
 }
@@ -253,6 +250,7 @@ const showModal = document.querySelector('#showModal')
 const tableTbody = document.querySelector('#table-tbody')
 const totalCartItem = document.querySelector('#total-cart-item')
 const totalPrice = document.querySelector('#total-price')
+
 showModal.addEventListener('click', () => {
     modal.classList.remove('hidden')
      let totalP = 0
@@ -299,9 +297,7 @@ showModal.addEventListener('click', () => {
     totalPrice.innerText = `$ ${totalP}`
            
 }
-  else{
-    
-  }
+ 
 
 })
 
@@ -310,16 +306,20 @@ const closeModal = () => {
     tableTbody.innerHTML = ''
 }
 
-const checkOut = () =>{
-    localStorage.clear('product')
+
+
+checkOutBtn.addEventListener('click', ()=>{
+
+   localStorage.clear('product')
     modal.classList.add('hidden')
     chectoutValue.textContent = 0
     totalCartItem.innerText = 0
     totalPrice.innerText = 0
     tableTbody.innerHTML = ''
     notification.classList.remove('hidden')
+
     notification.innerHTML =`
-    <div class="bg-red-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between">
+    <div class="bg-green-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between">
             <div>
                 <div class="flex items-center gap-4 text-lg">
                     <i class="fa-solid fa-check"></i>
@@ -332,4 +332,8 @@ const checkOut = () =>{
            
         </div>
     `
-}
+    // checkOutBtn.classList.add('disabled')
+})
+ 
+
+
