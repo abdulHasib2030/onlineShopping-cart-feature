@@ -3,150 +3,190 @@ import img1 from '../assets/img3.jpeg';
 import img2 from '../assets/img2.jpeg';
 import img3 from '../assets/img1.jpeg';
 import img4 from '../assets/img4.jpeg';
+import { FaCheckCircle } from "react-icons/fa";
+import { MdError } from "react-icons/md";
 
 const ProductDetails = () => {
-    const [img, setImg] = useState(localStorage.getItem('img') ||  localStorage.setItem('img', img1))
+    const [img, setImg] = useState(localStorage.getItem('img') || localStorage.setItem('img', img1))
     const [color, setColor] = useState(localStorage.getItem('color') || localStorage.setItem('color', "Purple"))
     const [size, setSize] = useState('')
     const [cartCnt, setCartCnt] = useState(0)
-    const [error, setError] = useState('')
-   
-    
-//  ----------- Image Change when click color btn -------------------//
-    const handleImg = (color) =>{
+    const [error, setError] = useState({})
+    const [products, setProducts] = useState(JSON.parse(localStorage.getItem('product')) || [])
+    let temp = 0;
+    let tempPrice = 0; 
+
+
+    //  ----------- Image Change when click color btn -------------------//
+    const handleImg = (color) => {
         setColor(color)
-        if(color === 'Purple'){
+        if (color === 'Purple') {
             localStorage.setItem('color', color)
             localStorage.setItem('img', img1)
             setImg(img1)
-            
+
         }
-        else if (color === 'Blue'){
+        else if (color === 'Blue') {
             localStorage.setItem('color', color)
             localStorage.setItem('img', img2)
             setImg(img2)
         }
-        else if (color === 'Cyan'){
+        else if (color === 'Cyan') {
             localStorage.setItem('color', color)
             localStorage.setItem('img', img3)
             setImg(img3)
         }
-        else if (color === 'Black'){
+        else if (color === 'Black') {
             localStorage.setItem('color', color)
             localStorage.setItem('img', img4)
             setImg(img4)
         }
     }
 
-// -------------- size wise price pixed function --------------//
-const sizePrice = (s) =>{
-    if (s === 's'){
-        return 69;
+    // -------------- size wise price pixed function --------------//
+    const sizePrice = (s) => {
+        if (s === 's') {
+            return 69;
+        }
+        else if (s === 'm') {
+            return 79
+        }
+        else if (s === 'l') return 89
+        else if (s === 'xl') return 99
     }
-    else if(s === 'm'){
-        return 79
-    }
-    else if (s=== 'l') return 89
-    else if (s === 'xl') return 99
-}
 
-// ------------- Add To cart Btn --------------------//
-const handleAddtoCart = () => {
-    if (!size){
-        document.getElementById('notification').classList.remove('hidden')
-        setError('Selsect size.')
-        return 
+    // ------------- Add To cart Btn --------------------//
+    const handleAddtoCart = () => {
+        if (!size) {
+            document.getElementById('notification').classList.remove('hidden')
+            
+            return setError({red:'Selsect size.'})
+        }
+        else if (cartCnt < 1) {
+            document.getElementById('notification').classList.remove('hidden')
+            
+            return setError({red:"Select quantity."})
+        }
+        else {
+            document.getElementById('notification').classList.add('hidden')
+        }
+
+        let productData = []
+        let flag = true;
+        const item = localStorage.getItem('product')
+        if (item) {
+            productData = JSON.parse(item)
+            productData.map(ite => {
+                if (ite.color === localStorage.getItem('color') && ite.size === size) {
+                    ite.qnt += cartCnt;
+                    ite.price = ite.qnt * sizePrice(size)
+                    flag = false
+
+                }
+            })
+
+
+            const product = {
+                color: localStorage.getItem('color'),
+                img: localStorage.getItem('img'),
+                qnt: cartCnt,
+                size: size,
+                price: cartCnt * sizePrice(size)
+            }
+
+            if (flag) {
+                productData.push(product)
+            }
+        }
+        else {
+            const localColor = localStorage.getItem('color')
+            const imglocal = localStorage.getItem('img')
+            if (!localColor) {
+                localStorage.setItem('color', 'Purple')
+            }
+            if (!imglocal) {
+                localStorage.setItem('img', img1)
+            }
+            const product = {
+                color: localStorage.getItem('color'),
+                img: localStorage.getItem('img'),
+                qnt: cartCnt,
+                size: size,
+                price: cartCnt * sizePrice(size)
+
+            }
+            productData.push(product)
+        }
+
+
+        setProducts(JSON.parse(localStorage.getItem('product')))
+
+        localStorage.setItem('product', JSON.stringify(productData))
+        document.getElementById("checkout-btn").classList.remove('hidden')
+        document.getElementById('checkout-value').textContent = JSON.parse(localStorage.getItem('product')).length;
     }
-    else if(cartCnt< 1){
-        document.getElementById('notification').classList.remove('hidden')
-        setError("Select quantity.")
-        return
-    }
-    else{
+
+    const closeNotfication = () => {
         document.getElementById('notification').classList.add('hidden')
     }
 
-    let productData = []
-    let flag = true;
-    const item = localStorage.getItem('product')
-    if (item) {
-        productData = JSON.parse(item)
-        productData.map(ite => {
-            if (ite.color === localStorage.getItem('color') && ite.size === size) {
-                ite.qnt += cartCnt;
-                ite.price = ite.qnt * sizePrice(size)
-                flag = false
 
-            }
-        })
-         
+    //  ------------ show Modal -----------------//
 
-        const product = {
-            color: localStorage.getItem('color'),
-            img: localStorage.getItem('img'),
-            qnt: cartCnt,
-            size: size,
-            price: cartCnt * sizePrice(size)
-        }
-
-        if (flag) {
-            productData.push(product)
-        }
-    }
-    else {
-        const localColor = localStorage.getItem('color') 
-        const imglocal = localStorage.getItem('img')
-        if (!localColor ){
-            localStorage.setItem('color','Purple' )
-        }
-        if(!imglocal){
-            localStorage.setItem('img', img1)
-        }
-        const product = {
-            color: localStorage.getItem('color'),
-            img: localStorage.getItem('img'),
-            qnt: cartCnt,
-            size: size,
-            price: cartCnt * sizePrice(size)
-            
-        }
-        productData.push(product)
+    const showModal = () => {
+        document.getElementById('modal').classList.remove('hidden')
+        setProducts(JSON.parse(localStorage.getItem('product')))
+        if(!products) temp = 0
     }
 
-    localStorage.setItem('product', JSON.stringify(productData))
-    document.getElementById("checkout-btn").classList.remove('hidden')
-    document.getElementById('checkout-value').textContent =JSON.parse(localStorage.getItem('product')).length;
+    
+   if(products){
+   
+    products?.map(i => {
+        temp += i.qnt;
+        tempPrice += i.price;
 
-}
+    })
 
-const closeNotfication = () =>{
-    document.getElementById('notification').classList.add('hidden')
-}
+   }
 
+   const handleContinueShopping = () =>{
+    document.getElementById('modal').classList.add('hidden')
+   }
 
-//  ------------ show Modal -----------------//
-const showModal = ()=>{
-    document.getElementById('modal').classList.remove('hidden')
-}
+   const handleCheckout = () =>{
+    localStorage.clear();
+    setProducts([])
+    document.getElementById('checkout-value').textContent = 0
+    document.getElementById('modal').classList.add('hidden')
+    temp = 0
+    tempPrice = 0
+    document.getElementById('notification').classList.remove('hidden')
+   return setError({'green':"Thanks you are shopping our shop."})
+   }
+
 
     return (
         <div  >
-            {/* <!-- notification --> */}
+            {/* <!-- ERROR notification --> */}
             <div id="notification" className="top-4 left-[40%] hidden fixed">
                 {/* <!-- Error --> */}
-                <div className="bg-red-50 border-b border-red-400 text-red-800 text-sm p-4 flex justify-between">
-            <div>
-                <div className="flex items-center gap-4 text-lg">
-                    <i className="fa-solid fa-check"></i>
-                    <p >
-                     {error && error}
-                    </p>
-                   <p onClick={closeNotfication} className='cursor-pointer'>x</p>
+                <div className={`bg-${error.red? 'red': 'green'}-50 border-b border-${error.red? 'red': 'green'}-400 text-${error.red? 'red': 'green'}-800 text-sm p-4 flex justify-between`}>
+                    <div>
+                        <div className="flex items-center gap-4 text-lg">
+                        {error.red ?  <MdError /> : <FaCheckCircle/>}
+                       
+                            <p >
+                                {error.red ? error.red : error.green}
+                            </p>
+                            <p onClick={closeNotfication} className='cursor-pointer'>x</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-           
-        </div>
-            </div>
+            
+
 
             {/* <!-- modal --> */}
             <div id="modal"
@@ -179,23 +219,50 @@ const showModal = ()=>{
                                     </tr>
                                 </thead>
                                 <tbody id="table-tbody" className="text-sm divide-y divide-gray-100">
-                                    {/* <!-- table row  --> */}
+                                 
+
+                                    {
+                                      products?.map((item, idx)=> <tr key={idx}>   
+                                      
+                                      <td className="py-2 px-4">
+                                                <div className="flex items-center">
+                                                    <div className="flex-shrink-0 mr-2 sm:mr-3"><img className="w-16 rounded-md" src={item.img} alt="img not found" /></div>
+                                                    <div className="font-medium text-gray-400">Classy Modern Smart Watch</div>
+                                                </div>
+                                            </td>
+                                            <td className="py-2 px-4">
+                                                <div className="text-left font-semibold ">{item.color}</div>
+                                            </td>
+                                            <td className="py-2 px-4">
+                                                <div className="text-left font-bold uppercase" >{item.size}</div>
+                                            </td>
+                                            <td className="py-2 px-4">
+                                                <div className=" text-center font-bold">{item.qnt}</div>
+                                            </td>
+                                            <td className="py-2 px-4">
+                                                <div className="text-center font-bold">$ {item.price}</div>
+                                            </td>
+                                       </tr>)
+                                       
+                                        }
+                                   
+
 
                                 </tbody>
                             </table>
                             <div className="flex justify-between py-4 border-t">
                                 <h3 className="font-bold text-lg ">Total</h3>
                                 <div className="flex gap-8 tex-xl font-bold">
-                                    <h4 id="total-cart-item"></h4>
-                                    <h4 id="total-price"></h4>
+                                    <h4 id="total-cart-item">{temp}</h4>
+                                    <h4 id="total-price" className='mr-2'>${tempPrice}</h4>
                                 </div>
                             </div>
                             {/* <!-- modal btn --> */}
                             <div className="flex gap-4 justify-end pt-4">
-                                <button 
+                                <button onClick={handleContinueShopping}
                                     className="border py-2 px-6 font-semibold text-black rounded-md">Continue Shopping</button>
-                                <button 
-                                    className="bg-[#6576ff] py-2 px-6 rounded-md text-white font-semibold">Checkout</button>
+                                <button onClick={handleCheckout}
+                                    className={`bg-[#6576ff] ${temp === 0 && 'disabled:bg-gray-400 disabled:cursor-not-allowed'} py-2 px-6 rounded-md text-white font-semibold`}>Checkout</button>
                             </div>
 
                         </div>
@@ -254,16 +321,16 @@ const showModal = ()=>{
                         <div className="space-y-2">
                             <h1 className="text-xl font-bold text-start">Band Color</h1>
                             <div className="flex gap-4 items-center">
-                                <div onClick={()=>handleImg('Purple')} className={`${color === 'Purple' && 'border-2 p-1 rounded-full border-[#816bff]' }`}>
+                                <div onClick={() => handleImg('Purple')} className={`${color === 'Purple' && 'border-2 p-1 rounded-full border-[#816bff]'}`}>
                                     <div className="w-5 rounded-full bg-[#816bff] h-5 "></div>
                                 </div>
-                                <div onClick={()=> handleImg('Blue')} className={`${color === 'Blue' && 'border-2 p-1 rounded-full border-[#1FCEC9]' }`}>
+                                <div onClick={() => handleImg('Blue')} className={`${color === 'Blue' && 'border-2 p-1 rounded-full border-[#1FCEC9]'}`}>
                                     <div className="w-5 rounded-full bg-[#1FCEC9] h-5"></div>
                                 </div>
-                                <div onClick={() => handleImg('Cyan')} className={`${color === 'Cyan' && 'border-2 p-1 rounded-full border-[#4b97d3]' }`}>
+                                <div onClick={() => handleImg('Cyan')} className={`${color === 'Cyan' && 'border-2 p-1 rounded-full border-[#4b97d3]'}`}>
                                     <div className="w-5 rounded-full bg-[#4b97d3] h-5"></div>
                                 </div>
-                                <div onClick={() => handleImg('Black')}  className={`${color === 'Black' && 'border-2 p-1 rounded-full border-[#3b4747]' }`}>
+                                <div onClick={() => handleImg('Black')} className={`${color === 'Black' && 'border-2 p-1 rounded-full border-[#3b4747]'}`}>
                                     <div className="w-5 rounded-full bg-[#3b4747] h-5"></div>
                                 </div>
 
@@ -274,16 +341,16 @@ const showModal = ()=>{
                         <div className="space-y-2 text-start">
                             <h1 className="text-xl font-bold ">Wrist Size</h1>
                             <div className="space-x-4">
-                                <button onClick={()=>setSize('s')}
+                                <button onClick={() => setSize('s')}
                                     className={`${size === 's' && 'border-[#6576FF]'} px-6 py-2 border rounded-md font-bold text-lg`}>S <span
                                         className="text-gray-500 font-normal ml-2 text-base">$69</span></button>
-                                <button onClick={()=>setSize('m')}
+                                <button onClick={() => setSize('m')}
                                     className={`${size === 'm' && 'border-[#6576FF]'} px-6 py-2 border rounded-md font-bold text-lg`}>M <span
                                         className="text-gray-500 font-normal ml-2 text-base">$79</span></button>
-                                <button onClick={()=>setSize('l')}
+                                <button onClick={() => setSize('l')}
                                     className={`${size === 'l' && 'border-[#6576FF]'} px-6 py-2 border rounded-md font-bold text-lg`}>L <span
                                         className="text-gray-500 font-normal ml-2 text-base">$89</span></button>
-                                <button onClick={()=>setSize('xl')}
+                                <button onClick={() => setSize('xl')}
                                     className={`${size === 'xl' && 'border-[#6576FF]'} px-6 py-2 border rounded-md font-bold text-lg`}>XL <span
                                         className="text-gray-500 font-normal ml-2 text-base">$99</span></button>
                             </div>
@@ -292,9 +359,9 @@ const showModal = ()=>{
                         {/* product card add section  */}
                         <div className="flex gap-4 items-center">
                             <div className="border rounded-md">
-                                <button onClick={()=> setCartCnt(cartCnt === 0 ? 0 : cartCnt - 1)} className=" px-4 text-xl">-</button>
+                                <button onClick={() => setCartCnt(cartCnt === 0 ? 0 : cartCnt - 1)} className=" px-4 text-xl">-</button>
                                 <button id="cart-value" className="border-l border-r px-4 py-1">{cartCnt}</button>
-                                <button onClick={()=> setCartCnt(cartCnt +1)} className="px-4 text-xl">+</button>
+                                <button onClick={() => setCartCnt(cartCnt + 1)} className="px-4 text-xl">+</button>
                             </div>
                             <div>
                                 <button onClick={handleAddtoCart}
@@ -313,8 +380,8 @@ const showModal = ()=>{
 
 
             <div className="hidden fixed bottom-2 left-[45%] " id="checkout-btn">
-                <button onClick={showModal} className="bg-[#ffbb5a]  text-center  rounded-full py-3 texl-xl px-7 font-semibold">Checkout
-                    <span className="py-1 px-2 bg-white rounded-md text-black" id="checkout-value"></span></button>
+                <button onClick={showModal} className={`bg-[#ffbb5a]  text-center rounded-full py-3 texl-xl px-7 font-semibold`}>Checkout
+                    <span className="py-1 px-2 ml-2 bg-white rounded-md text-black" id="checkout-value"></span></button>
             </div>
 
         </div>
