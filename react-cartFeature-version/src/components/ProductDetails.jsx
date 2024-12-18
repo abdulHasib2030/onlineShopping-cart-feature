@@ -3,7 +3,7 @@ import img1 from '../assets/img3.jpeg';
 import img2 from '../assets/img2.jpeg';
 import img3 from '../assets/img1.jpeg';
 import img4 from '../assets/img4.jpeg';
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { MdError } from "react-icons/md";
 
 const ProductDetails = () => {
@@ -13,8 +13,7 @@ const ProductDetails = () => {
     const [cartCnt, setCartCnt] = useState(0)
     const [error, setError] = useState({})
     const [products, setProducts] = useState(JSON.parse(localStorage.getItem('product')) || [])
-    let temp = 0;
-    let tempPrice = 0; 
+
 
 
     //  ----------- Image Change when click color btn -------------------//
@@ -59,13 +58,13 @@ const ProductDetails = () => {
     const handleAddtoCart = () => {
         if (!size) {
             document.getElementById('notification').classList.remove('hidden')
-            
-            return setError({red:'Selsect size.'})
+
+            return setError({ red: 'Selsect size.' })
         }
         else if (cartCnt < 1) {
             document.getElementById('notification').classList.remove('hidden')
-            
-            return setError({red:"Select quantity."})
+
+            return setError({ red: "Select quantity." })
         }
         else {
             document.getElementById('notification').classList.add('hidden')
@@ -132,50 +131,49 @@ const ProductDetails = () => {
 
 
     //  ------------ show Modal -----------------//
-
     const showModal = () => {
         document.getElementById('modal').classList.remove('hidden')
         setProducts(JSON.parse(localStorage.getItem('product')))
-        if(!products) temp = 0
     }
 
-    
-   if(products){
-   
-    products?.map(i => {
-        temp += i.qnt;
-        tempPrice += i.price;
+    let temp = 0;
+    let tempPrice = 0;
+    if (products) {
 
-    })
+        products?.map(i => {
+            temp += i.qnt;
+            tempPrice += i.price;
 
-   }
+        })
 
-   const handleContinueShopping = () =>{
-    document.getElementById('modal').classList.add('hidden')
-   }
+    }
 
-   const handleCheckout = () =>{
-    localStorage.clear();
-    setProducts([])
-    document.getElementById('checkout-value').textContent = 0
-    document.getElementById('modal').classList.add('hidden')
-    temp = 0
-    tempPrice = 0
-    document.getElementById('notification').classList.remove('hidden')
-   return setError({'green':"Thanks you are shopping our shop."})
-   }
+    const handleContinueShopping = () => {
+        document.getElementById('modal').classList.add('hidden')
+    }
+
+    const handleCheckout = () => {
+        localStorage.clear();
+        setProducts([])
+        document.getElementById('checkout-value').textContent = 0
+        document.getElementById('modal').classList.add('hidden')
+        temp = 0
+        tempPrice = 0
+        document.getElementById('notification').classList.remove('hidden')
+        return setError({ 'green': "Thanks you are shopping our shop." })
+    }
 
 
     return (
         <div  >
             {/* <!-- ERROR notification --> */}
             <div id="notification" className="top-4 left-[40%] hidden fixed">
-                {/* <!-- Error --> */}
-                <div className={`bg-${error.red? 'red': 'green'}-50 border-b border-${error.red? 'red': 'green'}-400 text-${error.red? 'red': 'green'}-800 text-sm p-4 flex justify-between`}>
+
+                <div className={`bg-${error.red ? 'red' : 'green'}-50 border-b border-${error.red ? 'red' : 'green'}-400 text-${error.red ? 'red' : 'green'}-800 text-sm p-4 flex justify-between`}>
                     <div>
                         <div className="flex items-center gap-4 text-lg">
-                        {error.red ?  <MdError /> : <FaCheckCircle/>}
-                       
+                            {error.red ? <MdError /> : <FaCheckCircle />}
+
                             <p >
                                 {error.red ? error.red : error.green}
                             </p>
@@ -185,7 +183,7 @@ const ProductDetails = () => {
 
                 </div>
             </div>
-            
+
 
 
             {/* <!-- modal --> */}
@@ -219,12 +217,12 @@ const ProductDetails = () => {
                                     </tr>
                                 </thead>
                                 <tbody id="table-tbody" className="text-sm divide-y divide-gray-100">
-                                 
+
 
                                     {
-                                      products?.map((item, idx)=> <tr key={idx}>   
-                                      
-                                      <td className="py-2 px-4">
+                                        products?.map((item, idx) => <tr key={idx}>
+
+                                            <td className="py-2 px-4">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 mr-2 sm:mr-3"><img className="w-16 rounded-md" src={item.img} alt="img not found" /></div>
                                                     <div className="font-medium text-gray-400">Classy Modern Smart Watch</div>
@@ -242,10 +240,10 @@ const ProductDetails = () => {
                                             <td className="py-2 px-4">
                                                 <div className="text-center font-bold">$ {item.price}</div>
                                             </td>
-                                       </tr>)
-                                       
-                                        }
-                                   
+                                        </tr>)
+
+                                    }
+
 
 
                                 </tbody>
@@ -262,7 +260,7 @@ const ProductDetails = () => {
                                 <button onClick={handleContinueShopping}
                                     className="border py-2 px-6 font-semibold text-black rounded-md">Continue Shopping</button>
                                 <button onClick={handleCheckout}
-                                    className={`bg-[#6576ff] ${temp === 0 && 'disabled:bg-gray-400 disabled:cursor-not-allowed'} py-2 px-6 rounded-md text-white font-semibold`}>Checkout</button>
+                                    className="bg-[#6576ff] py-2 px-6 rounded-md text-white font-semibold">Checkout</button>
                             </div>
 
                         </div>
@@ -282,22 +280,14 @@ const ProductDetails = () => {
                         {/* product title  */}
                         <h1 className="font-bold text-3xl">Classy Modern Smart watch</h1>
                         {/* product rating  */}
-                        {/* <div className="rating rating-md rating-half items-center ">
-                    <input type="radio" name="rating-10" className="rating-hidden" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-orange-400"
-                        checked="checked" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-1 bg-orange-400" />
-                    <input type="radio" name="rating-10" className="mask mask-star-2 mask-half-2 bg-orange-400" />
-
-                    <p className="text-sm text-gray-500 ml-4">(2 Reviews)</p>
-                </div>  */}
+                        <div className='flex items-center text-orange-400'>
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                          <FaStarHalfAlt />
+                            <p className="text-sm text-gray-500 ml-4">(2 Reviews)</p>
+                        </div>
                         {/* product price */}
                         <h4 className="text-3xl text-[#6576ff] font-bold "><del
                             className="text-xl font-normal text-gray-500">$99.00</del> $79.00</h4>
@@ -380,7 +370,7 @@ const ProductDetails = () => {
 
 
             <div className="hidden fixed bottom-2 left-[45%] " id="checkout-btn">
-                <button onClick={showModal} className={`bg-[#ffbb5a]  text-center rounded-full py-3 texl-xl px-7 font-semibold`}>Checkout
+                <button onClick={showModal} className="bg-[#ffbb5a]  text-center  rounded-full py-3 texl-xl px-7 font-semibold">Checkout
                     <span className="py-1 px-2 ml-2 bg-white rounded-md text-black" id="checkout-value"></span></button>
             </div>
 

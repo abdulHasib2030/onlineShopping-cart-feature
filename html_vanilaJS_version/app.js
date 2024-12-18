@@ -156,7 +156,7 @@ cartBtn.addEventListener('click', () => {
 
     localStorage.setItem('product', JSON.stringify(productData))
 
-    // console.log();
+
     chectoutBtn.classList.remove('hidden')
     chectoutValue.textContent =JSON.parse(localStorage.getItem('product')).length;
 })
