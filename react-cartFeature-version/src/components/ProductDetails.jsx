@@ -165,11 +165,11 @@ const ProductDetails = () => {
 
 
     return (
-        <div  >
+        <div  className=' relative'>
             {/* <!-- ERROR notification --> */}
             <div id="notification" className="top-4 left-[40%] hidden fixed">
 
-                <div className={`bg-${error.red ? 'red' : 'green'}-50 border-b border-${error.red ? 'red' : 'green'}-400 text-${error.red ? 'red' : 'green'}-800 text-sm p-4 flex justify-between`}>
+                <div className={`bg-${error?.red ?'red':'green'}-500 border-b border-${error?.red ? 'red' : 'green'}-400 text-${error?.red ? 'red' : 'green'}-800 text-sm p-4 flex justify-between`}>
                     <div>
                         <div className="flex items-center gap-4 text-lg">
                             {error.red ? <MdError /> : <FaCheckCircle />}
@@ -188,7 +188,7 @@ const ProductDetails = () => {
 
             {/* <!-- modal --> */}
             <div id="modal"
-                className="min-h-screen absolute h-full w-full mx-auto bg-black bg-opacity-50 flex items-center justify-center z-50 hidden overflow-auto">
+                className=" absolute h-full w-full mx-auto bg-black bg-opacity-50 flex items-center justify-center z-50 hidden overflow-auto">
 
                 <div className="mx-auto bg-white py-8 px-4 rounded-md  border-gray-200 ">
                     <header className="px-5 py-4 border-gray-100">
