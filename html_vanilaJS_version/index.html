@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="">
+
+    <!-- notification -->
+    <div id="notification" class="top-4 left-[40%] hidden fixed">
+        <!-- Error -->
+        <div class="bg-red-50 border-b border-red-400 text-red-800 text-sm p-4 flex justify-between">
+            <div>
+                <div class="flex items-center gap-4 text-lg">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <p id="error-msg">
+                
+                    </p>
+                    <i class="fa-solid fa-xmark" id="close-error"></i>
+                </div>
+            </div>
+           
+        </div>
+
+        <!-- Success -->
+        <!-- <div class="bg-green-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between">
+            <div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <p>
+                        <span class="font-bold">Info:</span>
+                        This is an Success alert
+                    </p>
+                </div>
+            </div>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </div>
+        </div> -->
+
+    </div>
+
+    <!-- modal -->
+    <div id="modal"
+        class="absolute inset-0  bg-black bg-opacity-50 flex items-center justify-center z-50 hidden overflow-auto">
+
+        <div class="mx-auto bg-white py-8 px-4 rounded-md  border-gray-200 ">
+            <header class="px-5 py-4 border-gray-100">
+                <h2 class="font-semibold text-gray-800">Your Cart</h2>
+            </header>
+            <div class="p-3">
+                <div class="">
+                    <table class="table-auto w-full">
+                        <thead class="text-xs font-semibold  text-gray-400 border-b ">
+                            <tr>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Item</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Color</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-left">Size</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-center">Qnt</div>
+                                </th>
+                                <th class="p-2 whitespace-nowrap">
+                                    <div class="font-semibold text-center">Price</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-tbody" class="text-sm divide-y divide-gray-100">
+                            <!-- table row  -->
+
+                        </tbody>
+                    </table>
+                    <div class="flex justify-between py-4 border-t">
+                        <h3 class="font-bold text-lg ">Total</h3>
+                        <div class="flex gap-8 tex-xl font-bold">
+                            <h4 id="total-cart-item"></h4>
+                            <h4 id="total-price"></h4>
+                        </div>
+                    </div>
+                    <!-- modal btn -->
+                    <div class="flex gap-4 justify-end pt-4">
+                        <button onclick="closeModal()"
+                            class="border py-2 px-6 font-semibold text-black rounded-md">Continue Shopping</button>
+                        <button onclick="checkOut()"
+                            class="bg-[#6576ff] py-2 px-6 rounded-md text-white font-semibold">Checkout</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <section class="min-h-screen w-11/12 mx-auto flex justify-center  items-center">
+        <div class="lg:flex items-center gap-8 my-10 ">
+            <div class="md:w-1/2 w-full">
+                <img id="product-img" src="./assets/img3.jpeg" class="rounded-md" alt="">
+            </div>
+            <div class="space-y-4">
+                <!-- product title -->
+                <h1 class="font-bold text-3xl">Classy Modern Smart watch</h1>
+                <!-- product rating -->
+                <!-- <div class="rating rating-md rating-half items-center ">
+                    <input type="radio" name="rating-10" class="rating-hidden" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-orange-400"
+                        checked="checked" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-1 bg-orange-400" />
+                    <input type="radio" name="rating-10" class="mask mask-star-2 mask-half-2 bg-orange-400" />
+
+                    <p class="text-sm text-gray-500 ml-4">(2 Reviews)</p>
+                </div> -->
+                <!-- product price -->
+                <h4 class="text-3xl text-[#6576ff] font-bold "><del
+                        class="text-xl font-normal text-gray-500">$99.00</del> $79.00</h4>
+                <!-- product Description -->
+                <p class="md:w-4/5 text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro quod
+                    pariatur, dignissimos deleniti,
+                    voluptate alias, doloribus ducimus facere cum animi enim! Ipsum quos veritatis perferendis odit id
+                    iure quo quasi!</p>
+                <!-- product model type -->
+                <div class="flex gap-14">
+                    <div>
+                        <h4 class="text-lg text-gray-500">Type</h4>
+                        <h3 class="font-bold text-xl">Watch</h3>
+                    </div>
+                    <div>
+                        <h4 class="text-lg text-gray-500">Model Number</h4>
+                        <h3 class="font-bold text-xl">Forerunner 290XT</h3>
+                    </div>
+                </div>
+                <!-- product brand color -->
+                <div class="space-y-2">
+                    <h1 class="text-xl font-bold ">Band Color</h1>
+                    <div class="flex gap-4 items-center">
+                        <div onclick="colorChoose(1, this)" class="change-1 ">
+                            <div class="w-5 rounded-full bg-[#816bff] h-5 "></div>
+                        </div>
+                        <div onclick="colorChoose(2, this)" class="change-2">
+                            <div class="w-5 rounded-full bg-[#1FCEC9] h-5"></div>
+                        </div>
+                        <div onclick="colorChoose(3, this)" class="change-3">
+                            <div class="w-5 rounded-full bg-[#4b97d3] h-5"></div>
+                        </div>
+                        <div onclick="colorChoose(4, this)" class="change-4">
+                            <div class="w-5 rounded-full bg-[#3b4747] h-5"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- product size section -->
+                <div class="space-y-2">
+                    <h1 class="text-xl font-bold ">Wrist Size</h1>
+                    <div class="space-x-4">
+                        <button onclick="sizeChoose(1)"
+                            class="sizeAdd-1 px-6 py-2 border rounded-md font-bold text-lg">S <span
+                                class="text-gray-500 font-normal ml-2 text-base">$69</span></button>
+                        <button onclick="sizeChoose(2)"
+                            class="sizeAdd-2 px-6 py-2 border rounded-md font-bold text-lg">M <span
+                                class="text-gray-500 font-normal ml-2 text-base">$79</span></button>
+                        <button onclick="sizeChoose(3)"
+                            class="sizeAdd-3 px-6 py-2 border rounded-md font-bold text-lg">L <span
+                                class="text-gray-500 font-normal ml-2 text-base">$89</span></button>
+                        <button onclick="sizeChoose(4)"
+                            class="sizeAdd-4 px-6 py-2 border rounded-md font-bold text-lg">XL <span
+                                class="text-gray-500 font-normal ml-2 text-base">$99</span></button>
+                    </div>
+                </div>
+
+                <!-- product card add section -->
+                <div class="flex gap-4 items-center">
+                    <div class="border rounded-md">
+                        <button onclick="cartDecreaseIncrease('misus')" class=" px-4 text-xl">-</button>
+                        <button id="cart-value" class="border-l border-r px-4 py-1">0</button>
+                        <button onclick="cartDecreaseIncrease('plus')" class="px-4 text-xl">+</button>
+                    </div>
+                    <div>
+                        <button id="cart-btn"
+                            class="font-semibold text-lg py-1 px-4 bg-[#6576ff] rounded-md text-white">Add to
+                            Cart</button>
+                    </div>
+                    <i class="fa-regular fa-heart text-[#6576ff]"></i>
+                </div>
+
+            </div>
+        </div>
+
+        <!--  floting checkout btn -->
+
+    </section>
+
+    <div class="hidden fixed bottom-2 left-[45%] " id="checkout-btn">
+        <button id="showModal" class="bg-[#ffbb5a]  text-center  rounded-full py-3 texl-xl px-7 font-semibold">Checkout
+            <span class="py-1 px-2 bg-white rounded-md text-black" id="checkout-value"></span></button>
+    </div>
+
+
+
+
+
+
+    <script src="./app.js"></script>
+</body>
+
+</html>
