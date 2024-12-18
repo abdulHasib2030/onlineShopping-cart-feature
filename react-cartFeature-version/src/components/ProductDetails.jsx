@@ -59,12 +59,12 @@ const ProductDetails = () => {
         if (!size) {
             document.getElementById('notification').classList.remove('hidden')
 
-            return setError({ red: 'Selsect size.' })
+            return setError({ red: 'Please select a size for the product before proceeding.' })
         }
         else if (cartCnt < 1) {
             document.getElementById('notification').classList.remove('hidden')
 
-            return setError({ red: "Select quantity." })
+            return setError({ red: "The quantity is required to continue." })
         }
         else {
             document.getElementById('notification').classList.add('hidden')
@@ -160,7 +160,7 @@ const ProductDetails = () => {
         temp = 0
         tempPrice = 0
         document.getElementById('notification').classList.remove('hidden')
-        return setError({ 'green': "Thanks you are shopping our shop." })
+        return setError({ green: 'Your order has been successfully placed. Thank you for shopping with us!' })
     }
 
 
@@ -169,7 +169,7 @@ const ProductDetails = () => {
             {/* <!-- ERROR notification --> */}
             <div id="notification" className="top-4 left-[40%] hidden fixed">
 
-                <div className={`bg-${error?.red ?'red':'green'}-500 border-b border-${error?.red ? 'red' : 'green'}-400 text-${error?.red ? 'red' : 'green'}-800 text-sm p-4 flex justify-between`}>
+                <div className={`bg-${error?.red ?'red':'green'}-50 border-b border-${error?.red ? 'red' : 'green'}-400 text-${error?.red ? 'red' : 'green'}-800 text-sm p-4 flex justify-between`}>
                     <div>
                         <div className="flex items-center gap-4 text-lg">
                             {error.red ? <MdError /> : <FaCheckCircle />}
