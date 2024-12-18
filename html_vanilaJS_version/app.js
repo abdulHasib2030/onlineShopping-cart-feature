@@ -4,7 +4,7 @@ const chectoutValue = document.querySelector('#checkout-value')
 const productImg = document.querySelector('#product-img')
 const checkOutBtn = document.querySelector('#checkOut') // inner modal checkout btn
 
-// error msg //
+// show msg //
 const notification = document.querySelector('#notification')
 
 
@@ -15,6 +15,7 @@ const sizeChoose = (id) => {
     const sizeBtn = document.querySelector(`.sizeAdd-${id}`)
     sizeBtn.classList.add('border-[#6576FF]')
 
+    //  remove border
     for (let i = 1; i < 5; i++) {
 
         const sizeBtnInner = document.querySelector(`.sizeAdd-${i}`)
@@ -25,7 +26,7 @@ const sizeChoose = (id) => {
             if (id == 4) size = 'xl'
             continue;
         }
-        console.log(sizeBtnInner);
+      
         sizeBtnInner.classList.remove('border-[#6576FF]')
 
     }
@@ -70,7 +71,7 @@ cartBtn.addEventListener('click', () => {
                 <div class="flex items-center gap-4 text-lg">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <p >
-                    Selecy size.
+                    Please select a size for the product before proceeding. 
                     </p>
                     <i class="fa-solid fa-xmark" onclick="closeError()"></i>
                 </div>
@@ -90,7 +91,7 @@ cartBtn.addEventListener('click', () => {
                <div class="flex items-center gap-4 text-lg">
                    <i class="fa-solid fa-circle-exclamation"></i>
                    <p id="error-msg">
-                   Selecy quantity.
+                  The quantity is required to continue.
                    </p>
                    <i class="fa-solid fa-xmark" onclick="closeError()"></i>
                </div>
@@ -106,8 +107,8 @@ cartBtn.addEventListener('click', () => {
 
 
     let productData = []
-    let flag = true;
-    const item = localStorage.getItem('product')
+    let flag = true;  
+    const item = localStorage.getItem('product') // find localstore product 
     if (item) {
         productData = JSON.parse(item)
         productData.map(ite => {
@@ -132,14 +133,15 @@ cartBtn.addEventListener('click', () => {
             productData.push(product)
         }
     }
+
     else {
         const localColor = localStorage.getItem('color') 
         const imglocal = localStorage.getItem('imgSrc')
         if (!localColor ){
-            localStorage.setItem('color','Purple' )
+            localStorage.setItem('color','Purple' ) // default color set
         }
         if(!imglocal){
-            localStorage.setItem('imgSrc', "./assets/img3.jpeg")
+            localStorage.setItem('imgSrc', "./assets/img3.jpeg") // default image set
         }
         const product = {
             color: localStorage.getItem('color'),
@@ -154,11 +156,28 @@ cartBtn.addEventListener('click', () => {
     }
 
 
-    localStorage.setItem('product', JSON.stringify(productData))
+    localStorage.setItem('product', JSON.stringify(productData)) // stored localstorage
 
 
     chectoutBtn.classList.remove('hidden')
     chectoutValue.textContent =JSON.parse(localStorage.getItem('product')).length;
+    if (!flag){
+        notification.classList.remove('hidden')
+        notification.innerHTML = `
+        <div class="bg-green-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between">
+            <div>
+                <div class="flex items-center gap-4 text-lg">
+                    <i class="fa-solid fa-check"></i>
+                    <p >
+                      The item is already in your cart. The quantity has been updated.
+                    </p>
+                    <i class="fa-solid fa-xmark" onclick="closeError()"></i>
+                </div>
+            </div>
+           
+        </div>
+       `
+    }
 })
 
 
@@ -228,6 +247,7 @@ const colorChoose = (id, exectItem) => {
         exectItem.classList = `border-2 border-[#3B4747] p-1 rounded-full change-4`
     }
 
+    // remove color 
     for (let i = 1; i < 5; i++) {
         const changeColor = document.querySelector(`.change-${i}`)
         if (i === id) {
@@ -307,7 +327,7 @@ const closeModal = () => {
 }
 
 
-
+//--------------- modal inner check out btn -----------//
 checkOutBtn.addEventListener('click', ()=>{
 
    localStorage.clear('product')
@@ -324,7 +344,7 @@ checkOutBtn.addEventListener('click', ()=>{
                 <div class="flex items-center gap-4 text-lg">
                     <i class="fa-solid fa-check"></i>
                     <p >
-                     Thanks you are purchase our product.
+                     Your order has been successfully placed. Thank you for shopping with us!
                     </p>
                     <i class="fa-solid fa-xmark" onclick="closeError()"></i>
                 </div>

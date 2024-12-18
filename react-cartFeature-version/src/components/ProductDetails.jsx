@@ -71,10 +71,11 @@ const ProductDetails = () => {
         }
 
         let productData = []
-        let flag = true;
+        let flag = true; // ignore alrady added cart item // 
         const item = localStorage.getItem('product')
         if (item) {
             productData = JSON.parse(item)
+            // already item added cart just quantity and price updated //
             productData.map(ite => {
                 if (ite.color === localStorage.getItem('color') && ite.size === size) {
                     ite.qnt += cartCnt;
@@ -118,13 +119,18 @@ const ProductDetails = () => {
         }
 
 
-        setProducts(JSON.parse(localStorage.getItem('product')))
+        setProducts(JSON.parse(localStorage.getItem('product')))  // product added localStorage //
 
         localStorage.setItem('product', JSON.stringify(productData))
         document.getElementById("checkout-btn").classList.remove('hidden')
-        document.getElementById('checkout-value').textContent = JSON.parse(localStorage.getItem('product')).length;
+        document.getElementById('checkout-value').textContent = JSON.parse(localStorage.getItem('product')).length; // checkout cart item data length
+        if(!flag){
+            document.getElementById('notification').classList.remove('hidden') // show notify modal
+            setError({green:'The item is already in your cart. The quantity has been updated.'})
+        }
     }
 
+    // notification close function//
     const closeNotfication = () => {
         document.getElementById('notification').classList.add('hidden')
     }
@@ -136,8 +142,8 @@ const ProductDetails = () => {
         setProducts(JSON.parse(localStorage.getItem('product')))
     }
 
-    let temp = 0;
-    let tempPrice = 0;
+    let temp = 0;   // set modal total quantity of cart item
+    let tempPrice = 0; // set modal total price of cart item
     if (products) {
 
         products?.map(i => {
@@ -148,10 +154,12 @@ const ProductDetails = () => {
 
     }
 
+    // inner modal continue shopping btn close modal // 
     const handleContinueShopping = () => {
         document.getElementById('modal').classList.add('hidden')
     }
 
+    // modal inner checkout btn //
     const handleCheckout = () => {
         localStorage.clear();
         setProducts([])
@@ -166,10 +174,10 @@ const ProductDetails = () => {
 
     return (
         <div  className=' relative'>
-            {/* <!-- ERROR notification --> */}
+            {/* <!-- notification --> */}
             <div id="notification" className="top-4 left-[40%] hidden fixed">
 
-                <div className={`bg-${error?.red ?'red':'green'}-50 border-b border-${error?.red ? 'red' : 'green'}-400 text-${error?.red ? 'red' : 'green'}-800 text-sm p-4 flex justify-between`}>
+                <div className={` ${error.red ? 'bg-red-50 text-red-800 border-red-400': 'bg-green-50 text-green-800 border-green-400'} border-b   text-sm p-4 flex justify-between`}>
                     <div>
                         <div className="flex items-center gap-4 text-lg">
                             {error.red ? <MdError /> : <FaCheckCircle />}
@@ -364,7 +372,7 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                {/* floting checkout btn */}
+             
 
             </section>
 
